@@ -2,6 +2,10 @@
 
 #include "RTLight.h"
 
+/**
+*	点光源，照射幅和点到光源的距离成反比
+*/
+
 class PointLight :public RTLight 
 {
 public:
