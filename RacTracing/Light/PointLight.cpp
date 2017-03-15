@@ -19,6 +19,7 @@ RayTracing::Color PointLight::Intersect(Object* Scene, IntersectResult& HitPos)
 
 	double rr = HitPos.LightDir.SquareLength();
 	double r = SDL_sqrt(rr);
+
 	HitPos.LightDir = HitPos.LightDir / r;
 	if(bShadow)
 	{
@@ -28,6 +29,6 @@ RayTracing::Color PointLight::Intersect(Object* Scene, IntersectResult& HitPos)
 			return RayTracing::Color::Black;
 	}
 
-	return Irradiance*(1000.0/ rr);
+	return Irradiance*(1500.0/ rr);
 }
 

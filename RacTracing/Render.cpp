@@ -10,6 +10,7 @@
 #include <algorithm>
 #include "Light/DirectLight.h"
 #include "Light/PointLight.h"
+#include "Light/SpotLight.h"
 
 
 RenderEngine::RenderEngine()
@@ -89,11 +90,18 @@ bool RenderEngine::Draw()
 		RayTracing::Vector3(-1.75, -2.0, -1.5),
 		RayTracing::Color::White));*/
 
-	TargetScene.AddLights(new PointLight(
+	/*TargetScene.AddLights(new PointLight(
 		RayTracing::Vector3(30.0, 40.0, 20.0),
 		RayTracing::Color::White,
 		true
-	));
+	));*/
+
+	TargetScene.AddLights(new SpotLight(
+		RayTracing::Vector3(30.0, 40.0, 20.0),
+		RayTracing::Color(0.0,0.0,1.0,1.0),
+		RayTracing::Vector3(-1.0, -1.0, -1.0),
+		20,
+		30));
 
 	Camera Eye(RayTracing::Vector3(0,10,10),RayTracing::Vector3(0,0,-1),RayTracing::Vector3(0,1,0),90);
 
