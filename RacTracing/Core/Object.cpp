@@ -23,7 +23,10 @@ IntersectResult Object::Intersect(RayTracing::Ray& In)
 void Object::DrawMaterial(RayTracing::Ray& InRay, RayTracing::Vector3& Position, RayTracing::Vector3& Normal,RayTracing::Color& OutColor)
 {
 	if (pMaterial)
-		OutColor = OutColor*(pMaterial->Sample(InRay, Position, Normal));
+	{
+		RayTracing::Color mMatColor = pMaterial->Sample(InRay, Position, Normal);
+		OutColor = OutColor*mMatColor+mMatColor;
+	}
 	else
 		OutColor = OutColor*0.5;
 }
