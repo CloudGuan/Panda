@@ -1,14 +1,18 @@
 #include "Vertex.h"
 #include <string.h>
 
-SVertex::SVertex(float InPos[3], float InNor[3], RayTracing::Color& InColor)
-:mPointColor(InColor)
+
+
+SVertex::SVertex(RayTracing::Vector3& InPos, RayTracing::Vector3& InNor, RayTracing::Color& InColor)
+:mPosition(InPos)
+, mNormal(InNor)
+, mPointColor(InColor)
 {
-	memcpy(mPosition, InPos, sizeof(float)* 3);
-	memcpy(mNormal, InNor, sizeof(float)* 3);
+
 }
 
 SVertex::~SVertex()
 {
 
 }
+
