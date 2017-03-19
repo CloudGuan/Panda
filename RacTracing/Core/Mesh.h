@@ -10,7 +10,7 @@ class StaticMesh :public Object
 {
 public:
 	StaticMesh() = delete;
-	StaticMesh(std::vector<SVertex>&,std::vector<int>&);
+	StaticMesh(std::vector<SVertex>&,std::vector<int[3]>&);
 	~StaticMesh();
 
 	virtual IntersectResult Intersect(RayTracing::Ray&)override;
@@ -18,5 +18,5 @@ public:
 	bool IntersectTriangle(const SVertex&,const SVertex&,const SVertex&,const RayTracing::Ray&);
 public:
 	std::vector<SVertex>	mVertexLists;
-	std::vector<int>		mVerIndexLists;
+	std::vector<int[3]>		mVerIndexLists;
 };

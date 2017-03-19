@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
 
-StaticMesh::StaticMesh(std::vector<SVertex>& inVer, std::vector<int>& inVerInd)
+StaticMesh::StaticMesh(std::vector<SVertex>& inVer, std::vector<int[3]>& inVerInd)
 {
 
 }
@@ -11,8 +11,18 @@ StaticMesh::~StaticMesh()
 
 }
 
-IntersectResult StaticMesh::Intersect(RayTracing::Ray&)
+IntersectResult StaticMesh::Intersect(RayTracing::Ray& InRay)
 {
+	/**traversal the list of vertexs */
+	double mDistance = 1e-10;
+	for (auto It = mVerIndexLists.cbegin(); It != mVerIndexLists.cend(); ++It)
+	{
+		if (IntersectTriangle(mVertexLists[(*It)[0]], mVertexLists[(*It)[1]], mVertexLists[(*It)[2]], InRay)) 
+		{
+			
+		}
+	}
+
 	return IntersectResult::NoHit;
 }
 
