@@ -28,15 +28,11 @@ RayTracing::Vector3::~Vector3()
 
 }
 
-RayTracing::Vector3 RayTracing::Vector3::operator+(const Vector3& rhs)
-{
-	return Vector3(mx+rhs.mx,my+rhs.my,mz+rhs.mz);
-}
+//RayTracing::Vector3 RayTracing::Vector3::operator+(const Vector3& rhs)
+//{
+//	return Vector3(mx+rhs.mx,my+rhs.my,mz+rhs.mz);
+//}
 
-RayTracing::Vector3 RayTracing::Vector3::operator-(const Vector3& rhs)
-{
-	return Vector3(mx - rhs.mx, my - rhs.my, mz - rhs.mz);
-}
 
 RayTracing::Vector3 RayTracing::Vector3::operator-()
 {
@@ -80,7 +76,19 @@ RayTracing::Vector3& RayTracing::Vector3::operator=(const Vector3&rhs)
 	my = rhs.my;
 	mz = rhs.mz;
 	return *this;
-}	
+}
 
+namespace RayTracing 
+{
+	Vector3 operator+(const Vector3& lhs, const Vector3& rhs) 
+	{
+		return Vector3(lhs.mx-rhs.mx,lhs.my-rhs.my,lhs.mz-rhs.mz);
+	}
+	Vector3 operator-(const Vector3& lhs,const Vector3& rhs)
+	{
+		return Vector3(lhs.mx - rhs.mx, lhs.my - rhs.my,lhs.mz - rhs.mz);
+	}
+
+}
 
 

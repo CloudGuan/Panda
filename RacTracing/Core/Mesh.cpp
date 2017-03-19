@@ -18,13 +18,22 @@ IntersectResult StaticMesh::Intersect(RayTracing::Ray&)
 
 bool StaticMesh::IntersectTriangle(const SVertex& InV0, const SVertex& InV1, const SVertex& InV2, const RayTracing::Ray& InRay)
 {
-	/**Compute edges of triangle*/
-
-	RayTracing::Vector3 mEdge0 = InV0.mPosition - InV1.mPosition;
-	RayTracing::Vector3 mEdge1 = InV1.mPosition - InV2.mPosition;
-	/**if parrel to plane of triangle*/
-
-	/**if out side of triangle */
+	/**Compute edges of triangle and normal */
+	
+    RayTracing::Vector3 mEdge0 = InV1.mPosition - InV0.mPosition;
+	RayTracing::Vector3 mEdge1 = InV2.mPosition - InV0.mPosition;
+	RayTracing::Vector3 mNormal = mEdge0.cross(mEdge1);
+	/**
+	* if parrel to plane of triangle
+	* greater zero means intersect with triangle 
+	*/
+	if (InRay.GetDirection().dot(mNormal) == 0)
+		return false;
+	/**
+	* the experience :  P = (1-u-v)A-uB-vC;
+	* if P is inside of Triangle, 0<=u<=1 0<=v<=1 and u+v<=1
+	*/
+	
 	return false;
 }
 

@@ -12,8 +12,8 @@ namespace RayTracing
 		Ray(const Ray&);
 		~Ray();
 	public:
-		Vector3 GetOrigin() { return Origin; }
-		Vector3 GetDirection() { return Direction; }
+		Vector3 GetOrigin() const { return Origin; }
+		Vector3 GetDirection()const { return Direction; } 
 		Vector3 GetPoint(double);
 	private:
 		Vector3 Origin;
