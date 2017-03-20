@@ -20,7 +20,7 @@ RayTracing::Ray::~Ray()
 
 }
 
-RayTracing::Vector3 RayTracing::Ray::GetPoint(double t)
+RayTracing::Vector3 RayTracing::Ray::GetPoint(double t) const
 {
 	return (Origin + Direction*t);
 }

@@ -24,12 +24,12 @@ RayTracing::Color::~Color()
 
 }
 
-RayTracing::Color RayTracing::Color::operator+(const Color& rhs)
+RayTracing::Color RayTracing::Color::operator+(const Color& rhs) const
 {
 	return RayTracing::Color(r + rhs.r, g + rhs.g, b + rhs.b, a);
 }
 
-RayTracing::Color RayTracing::Color::operator*(float rop)
+RayTracing::Color RayTracing::Color::operator*(float rop) const
 {
 	return RayTracing::Color(r*rop,g*rop,b*rop,a);
 }

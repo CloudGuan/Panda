@@ -20,7 +20,7 @@ public:
 	
 	
 	Vector3 operator-();
-	Vector3 operator*(double op);
+	Vector3 operator*(double op) const;
 	Vector3 operator/(double op);
 	bool operator==(const Vector3&);
 

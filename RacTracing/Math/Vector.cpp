@@ -39,7 +39,7 @@ RayTracing::Vector3 RayTracing::Vector3::operator-()
 	return RayTracing::Vector3(-mx,-my,-mz);
 }
 
-RayTracing::Vector3 RayTracing::Vector3::operator*(double op)
+RayTracing::Vector3 RayTracing::Vector3::operator*(double op) const
 {
 	return Vector3(mx*op, my*op, mz*op);
 }

@@ -13,8 +13,8 @@ public:
 	~Color();
 public:
 	Color operator=(const Color&);
-	Color operator+(const Color&);
-	Color operator*(float);
+	Color operator+(const Color&) const;
+	Color operator*(float) const;
 	Color operator*(const Color&);
 	bool  operator==(const Color&);
 	void  Standardizing();

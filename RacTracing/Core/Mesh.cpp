@@ -29,6 +29,7 @@ IntersectResult StaticMesh::Intersect(RayTracing::Ray& InRay)
 bool StaticMesh::IntersectTriangle(const SVertex& InV0, const SVertex& InV1, const SVertex& InV2, const RayTracing::Ray& InRay)
 {
 	/**Compute edges of triangle and normal */
+	IntersectResult mHitPoint=IntersectResult::NoHit;
 
 	RayTracing::Vector3 mEdge0 = InV1.mPosition - InV0.mPosition;
 	RayTracing::Vector3 mEdge1 = InV2.mPosition - InV0.mPosition;
@@ -61,6 +62,11 @@ bool StaticMesh::IntersectTriangle(const SVertex& InV0, const SVertex& InV1, con
 
 	double mT = mTxE1.dot(mEdge1)*mInvDet;
 	
+	/** Compute point's positon,normal and color*/
+	mHitPoint.Geometry = this;
+	mHitPoint.Position = InRay.GetPoint(mT);
+	mHitPoint.Normal = InV0.mNormal*(1 - mU - mV) + InV1.mNormal*mU + InV2.mNormal*mV;
+	RayTracing::Color OutColor=InV0.mPointColor*(1 - mU - mV) + InV1.mPointColor*mU + InV2.mPointColor*mV;
 	return true;
 }
 
