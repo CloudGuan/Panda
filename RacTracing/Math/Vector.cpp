@@ -82,7 +82,7 @@ namespace RayTracing
 {
 	Vector3 operator+(const Vector3& lhs, const Vector3& rhs) 
 	{
-		return Vector3(lhs.mx-rhs.mx,lhs.my-rhs.my,lhs.mz-rhs.mz);
+		return Vector3(lhs.mx+rhs.mx,lhs.my+rhs.my,lhs.mz+rhs.mz);
 	}
 	Vector3 operator-(const Vector3& lhs,const Vector3& rhs)
 	{
