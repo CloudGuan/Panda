@@ -4,13 +4,15 @@
 #include "Core/Camera.h"
 
 #include "Core/Plane.h"
+#include "Light/DirectLight.h"
+#include "Light/PointLight.h"
+#include "Light/SpotLight.h"
+
 #include <SDL_render.h>
 #include <string.h>
 #include <iostream>
 #include <algorithm>
-#include "Light/DirectLight.h"
-#include "Light/PointLight.h"
-#include "Light/SpotLight.h"
+#include <time.h>
 
 
 RenderEngine::RenderEngine()
@@ -56,6 +58,7 @@ bool RenderEngine::Initialize(int x, int y, int width, int heigh)
 	{
 		std::cout << SDL_GetPixelFormatName(RInfo.texture_formats[i])<<'\t';
 	}
+	std::cout << std::endl;
 #endif
 	
 	SDL_RenderSetLogicalSize(pRenderer, WindInfo.Width, WindInfo.Heigh);
@@ -79,16 +82,16 @@ bool RenderEngine::Draw()
 	//Plane  SinglePlane(RayTracing::Vector3(0,1,0),5.0);
 
 	Rscene TargetScene;
-	TargetScene.AddObject(new Sphere(RayTracing::Vector3(0.0,10.0,-10.0), 8.0));
-	TargetScene.AddObject(new Plane(RayTracing::Vector3(0.0, 1.0, 0.0), 0.0));
-	TargetScene.AddObject(new Plane(RayTracing::Vector3(0.0, 0.0, 1.0), -50.0));
-	TargetScene.AddObject(new Plane(RayTracing::Vector3(1.0, 0.0, 0.0), -20.0));
-	
+	//TargetScene.AddObject(new Sphere(RayTracing::Vector3(0.0,10.0,-10.0), 8.0));
+	//TargetScene.AddObject(new Plane(RayTracing::Vector3(0.0, 1.0, 0.0), 0.0));
+	//TargetScene.AddObject(new Plane(RayTracing::Vector3(0.0, 0.0, 1.0), -50.0));
+	//TargetScene.AddObject(new Plane(RayTracing::Vector3(1.0, 0.0, 0.0), -20.0));
+	TargetScene.LoadMesh();
 
-	/*TargetScene.AddLights(new DirectLight(
+	TargetScene.AddLights(new DirectLight(
 		RayTracing::Vector3(1.0,1.0,1.0), 
 		RayTracing::Vector3(-1.75, -2.0, -1.5),
-		RayTracing::Color::White));*/
+		RayTracing::Color::White,false));
 
 	/*TargetScene.AddLights(new PointLight(
 		RayTracing::Vector3(30.0, 40.0, 20.0),
@@ -96,12 +99,12 @@ bool RenderEngine::Draw()
 		true
 	));*/
 
-	TargetScene.AddLights(new SpotLight(
+	/*TargetScene.AddLights(new SpotLight(
 		RayTracing::Vector3(30.0, 40.0, 20.0),
 		RayTracing::Color(0.0,0.0,1.0,1.0),
 		RayTracing::Vector3(-1.0, -1.0, -1.0),
 		20,
-		30));
+		30));*/
 
 	Camera Eye(RayTracing::Vector3(0,10,10),RayTracing::Vector3(0,0,-1),RayTracing::Vector3(0,1,0),90);
 
@@ -135,10 +138,15 @@ bool RenderEngine::Draw()
 			}
 			case SDL_KEYDOWN:
 			{
+
+				RayTracing::Ray SingleRay(Eye.GenerateRay(0.5,0.5));
+				RayTracingRender(&TargetScene, SingleRay, 2);
+				printf_s("ButtonDown!!!");
 				break;
 			}
 			case SDL_MOUSEBUTTONDOWN:
 			{
+				clock_t mStartTime = clock();
 				/**循环来使用*/
 				SDL_RenderClear(pRenderer);
 				//SDL_Color RenderColor;
@@ -166,9 +174,13 @@ bool RenderEngine::Draw()
 						
 					}
 				}
+				clock_t mEndTime = clock();
+				printf_s("Time is： %f\n", (float)(mEndTime - mStartTime) / CLOCKS_PER_SEC);
 				SDL_UnlockTexture(pTexture);
 				SDL_RenderCopy(pRenderer,pTexture, NULL, NULL);
 				SDL_RenderPresent(pRenderer);
+				//mEndTime = clock();
+				//printf_s("Time is： %f\n", (float)(mEndTime - mStartTime) / CLOCKS_PER_SEC);
 				break;
 			}
 			default:

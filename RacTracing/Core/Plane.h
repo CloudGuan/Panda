@@ -8,7 +8,7 @@ class Plane :public Object
 public:
 	Plane();
 	Plane(RayTracing::Vector3&, double);
-	~Plane();
+	virtual ~Plane();
 public:
 	virtual IntersectResult Intersect(RayTracing::Ray&)override;
 private:

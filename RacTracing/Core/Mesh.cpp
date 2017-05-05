@@ -1,5 +1,9 @@
 #include "Mesh.h"
 
+StaticMesh::StaticMesh() 
+{
+
+}
 
 StaticMesh::StaticMesh(std::vector<SVertex>& inVer, std::vector<int[3]>& inVerInd)
 {
@@ -8,28 +12,44 @@ StaticMesh::StaticMesh(std::vector<SVertex>& inVer, std::vector<int[3]>& inVerIn
 
 StaticMesh::~StaticMesh()
 {
-
+	for (unsigned int Index=0;Index<mVerIndexLists.size();Index++) 
+	{
+		delete mVerIndexLists[Index];
+		mVerIndexLists[Index] = nullptr;
+	}
 }
 
 IntersectResult StaticMesh::Intersect(RayTracing::Ray& InRay)
 {
 	/**traversal the list of vertexs */
-	double mDistance = 1e-10;
+	//double mDistance = 1e10;
+	IntersectResult HitRes = IntersectResult::NoHit;
+	//IntersectResult TempHit = IntersectResult::NoHit;
 	for (auto It = mVerIndexLists.cbegin(); It != mVerIndexLists.cend(); ++It)
 	{
-		if (IntersectTriangle(mVertexLists[(*It)[0]], mVertexLists[(*It)[1]], mVertexLists[(*It)[2]], InRay)) 
+		if (IntersectTriangle(mVertexLists[(*It)[0]], mVertexLists[(*It)[1]], mVertexLists[(*It)[2]], InRay, HitRes))
 		{
-			
+			/*if (mDistance > TempHit.Distance) 
+			{
+				mDistance = TempHit.Distance;
+				HitRes = TempHit;
+			}*/
+			break;
 		}
 	}
-
-	return IntersectResult::NoHit;
+	return HitRes;
 }
 
-bool StaticMesh::IntersectTriangle(const SVertex& InV0, const SVertex& InV1, const SVertex& InV2, const RayTracing::Ray& InRay)
+void StaticMesh::AddVertex(SVertex& pVertex)
+{
+	
+}
+
+/**法线使用平面的法线作为基准*/
+bool StaticMesh::IntersectTriangle(const SVertex& InV0, const SVertex& InV1, const SVertex& InV2, const RayTracing::Ray& InRay,IntersectResult& oHitPoint)
 {
 	/**Compute edges of triangle and normal */
-	IntersectResult mHitPoint=IntersectResult::NoHit;
+	oHitPoint=IntersectResult::NoHit;
 
 	RayTracing::Vector3 mEdge0 = InV1.mPosition - InV0.mPosition;
 	RayTracing::Vector3 mEdge1 = InV2.mPosition - InV0.mPosition;
@@ -38,10 +58,12 @@ bool StaticMesh::IntersectTriangle(const SVertex& InV0, const SVertex& InV1, con
 	* if parrel to plane of triangle
 	* greater zero means intersect with triangle
 	*/
+
 	RayTracing::Vector3 mDxE2 = InRay.GetDirection().cross(mEdge1);
-	double mDet = mDxE2.dot(mEdge1);
+
+	double mDet = mEdge0.dot(mDxE2);
 	/**if det is negative,intersect with the backface*/
-	if (mDet < 0)
+	if (mDet < 1e-8)
 		return false;
 
 	/**
@@ -53,20 +75,25 @@ bool StaticMesh::IntersectTriangle(const SVertex& InV0, const SVertex& InV1, con
 	RayTracing::Vector3 mOsubA = InRay.GetOrigin() - InV0.mPosition;
 
 	double mU = mOsubA.dot(mDxE2)*mInvDet;
-	if (mU < 0 || mU>1) return false;
+	if (mU < 0.0 || mU>1.0) return false;
 
 	RayTracing::Vector3 mTxE1 = mOsubA.cross(mEdge0);
 	double mV = InRay.GetDirection().dot(mTxE1)*mInvDet;
 
-	if (mV < 0 || (mV + mU)>1) return false;
+	if (mV < 0.0 || (mV + mU)>1.0) return false;
 
 	double mT = mTxE1.dot(mEdge1)*mInvDet;
-	
+
+	/** Compute the Barycentric Coordinates */
+
 	/** Compute point's positon,normal and color*/
-	mHitPoint.Geometry = this;
-	mHitPoint.Position = InRay.GetPoint(mT);
-	mHitPoint.Normal = InV0.mNormal*(1 - mU - mV) + InV1.mNormal*mU + InV2.mNormal*mV;
-	RayTracing::Color OutColor=InV0.mPointColor*(1 - mU - mV) + InV1.mPointColor*mU + InV2.mPointColor*mV;
+	oHitPoint.Geometry = this;
+	oHitPoint.Position = InRay.GetPoint(mT);
+	//mHitPoint.Normal = InV0.mNormal*(1 - mU - mV) + InV1.mNormal*mU + InV2.mNormal*mV;
+	oHitPoint.Normal = (mEdge0.cross(mEdge1)).normalize();
+	oHitPoint.Distance = mT;
+	//we should get the color of point by material
+	//RayTracing::Color OutColor=InV0.mPointColor*(1 - mU - mV) + InV1.mPointColor*mU + InV2.mPointColor*mV;
 	return true;
 }
 

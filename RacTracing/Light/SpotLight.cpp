@@ -33,9 +33,7 @@ RayTracing::Color SpotLight::Intersect(Object* Scene, IntersectResult& HitPos)
 	else if (LdotD <= HalfO)
 		spot = 0.0;
 	else 
-	{
 		spot = SDL_pow((LdotD - HalfO)*SubTO,0.5);
-	}
 
 	if (bShadow) 
 	{

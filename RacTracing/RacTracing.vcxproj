@@ -150,38 +150,51 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Core\Camera.cpp" />
+    <ClCompile Include="Core\Mesh.cpp" />
     <ClCompile Include="Core\Object.cpp" />
     <ClCompile Include="Core\Plane.cpp" />
     <ClCompile Include="Core\RScene.cpp" />
     <ClCompile Include="Light\DirectLight.cpp" />
     <ClCompile Include="Light\PointLight.cpp" />
     <ClCompile Include="Light\RTLight.cpp" />
+    <ClCompile Include="Light\SpotLight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material\CheckMaterial.cpp" />
     <ClCompile Include="Material\Material.cpp" />
     <ClCompile Include="Material\PhongMaterial.cpp" />
     <ClCompile Include="Math\Color.cpp" />
+    <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Math\Ray.cpp" />
+    <ClCompile Include="RayTracer.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
+    <ClCompile Include="Math\Vertex.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="Core\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Camera.h" />
+    <ClInclude Include="Core\Mesh.h" />
     <ClInclude Include="Core\Object.h" />
     <ClInclude Include="Core\Plane.h" />
     <ClInclude Include="Core\RScene.h" />
     <ClInclude Include="Light\DirectLight.h" />
     <ClInclude Include="Light\PointLight.h" />
     <ClInclude Include="Light\RTLight.h" />
+    <ClInclude Include="Light\SpotLight.h" />
     <ClInclude Include="Material\CheckMaterial.h" />
     <ClInclude Include="Material\Material.h" />
     <ClInclude Include="Material\PhongMaterial.h" />
     <ClInclude Include="Math\Color.h" />
+    <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Ray.h" />
+    <ClInclude Include="RayTracer.h" />
     <ClInclude Include="Math\Vector.h" />
+    <ClInclude Include="Math\Vertex.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="Core\Sphere.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

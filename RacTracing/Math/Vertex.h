@@ -6,7 +6,7 @@
 
 struct SVertex 
 {
-	SVertex()=delete;
+	SVertex();
 	SVertex(RayTracing::Vector3&,RayTracing::Vector3&,RayTracing::Color&);
 	~SVertex();
 
