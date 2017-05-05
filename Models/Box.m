@@ -1,0 +1,21 @@
+Vertex 1 -2.0 -2.0 -2.0
+Vertex 2 -2.0 2.0 -2.0
+Vertex 3  2.0  2.0 -2.0
+Vertex 4  2.0 -2.0 -2.0
+Vertex 5 -2.0 -2.0 2.0
+Vertex 6 -2.0  2.0 2.0
+Vertex 7  2.0  2.0 2.0
+Vertex 8  2.0 -2.0 2.0
+Face 1  1 2 3 
+Face 2  1 3 4
+Face 3  5 7 6
+Face 4  5 8 7
+Face 5  5 6 2
+Face 6  5 2 1 
+Face 7  4 3 7
+Face 8  4 7 8 
+Face 9  2 6 7
+Face 10 2 7 3 
+Face 11 5 1 4  
+Face 12 5 4 8
+
