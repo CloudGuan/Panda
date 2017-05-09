@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "../Light/RTLight.h"
 #include <vector>
+
 class Rscene :public Object 
 {
 public:

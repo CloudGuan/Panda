@@ -1,22 +1,35 @@
 #include "Mesh.h"
+#include "BoundBox.h"
+
+std::atomic<uint32_t> numIntersect(0);
+std::atomic<uint32_t> numRayTriangleTests(0);
 
 StaticMesh::StaticMesh() 
+	:mBoundBox(nullptr)
 {
 
 }
 
 StaticMesh::StaticMesh(std::vector<SVertex>& inVer, std::vector<int[3]>& inVerInd)
+	:mBoundBox(nullptr)
 {
-
+	
 }
 
 StaticMesh::~StaticMesh()
 {
 	for (unsigned int Index=0;Index<mVerIndexLists.size();Index++) 
 	{
-		delete mVerIndexLists[Index];
+		delete[] mVerIndexLists[Index];
 		mVerIndexLists[Index] = nullptr;
 	}
+
+	if (mBoundBox) delete mBoundBox;
+}
+
+void StaticMesh::AddBoundBox(BoundBox* pBBox)
+{
+	mBoundBox = pBBox;
 }
 
 IntersectResult StaticMesh::Intersect(RayTracing::Ray& InRay)
@@ -24,11 +37,21 @@ IntersectResult StaticMesh::Intersect(RayTracing::Ray& InRay)
 	/**traversal the list of vertexs */
 	//double mDistance = 1e10;
 	IntersectResult HitRes = IntersectResult::NoHit;
+
+	/**before test intersect with object,test bbox*/
+	if (mBoundBox) 
+	{
+		if (!mBoundBox->Intersect(InRay, HitRes.Distance))
+			return HitRes;
+	}
+
 	//IntersectResult TempHit = IntersectResult::NoHit;
 	for (auto It = mVerIndexLists.cbegin(); It != mVerIndexLists.cend(); ++It)
 	{
+		numRayTriangleTests.fetch_add(1);
 		if (IntersectTriangle(mVertexLists[(*It)[0]], mVertexLists[(*It)[1]], mVertexLists[(*It)[2]], InRay, HitRes))
 		{
+			numIntersect.fetch_add(1);
 			/*if (mDistance > TempHit.Distance) 
 			{
 				mDistance = TempHit.Distance;
@@ -96,4 +119,6 @@ bool StaticMesh::IntersectTriangle(const SVertex& InV0, const SVertex& InV1, con
 	//RayTracing::Color OutColor=InV0.mPointColor*(1 - mU - mV) + InV1.mPointColor*mU + InV2.mPointColor*mV;
 	return true;
 }
+
+
 

@@ -1,5 +1,7 @@
 #include "RScene.h"
 #include "Mesh.h"
+#include "BoundBox.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -35,29 +37,35 @@ void Rscene::LoadMesh()
 	std::ifstream mFileStream;
 	/**construct bound while load model*/
 	StaticMesh* mMeshObject = new StaticMesh();
+	BoundBox*	mBoundBox = new BoundBox();
 	int mIngrone;
-	RayTracing::Vector3 mOffset(0.0,5.0,-5.0);
+	RayTracing::Vector3 mOffset(0.0,5.0,-50.0);
 	//double minX, maxX, minY, maxY, minZ, maxZ;
 	// test_simp1
-	mFileStream.open("../Models/test_simp1.m", ifstream::in); //之后改为从文件加载
+	mFileStream.open("../Models/bunny500.m", ifstream::in); //之后改为从文件加载
 	if (mFileStream.fail())
 	{
 		cout << "OpenFile error!!!" << endl;
+		delete mMeshObject;
+		delete mBoundBox;
 		return;
 	}
+
 	mFileStream >> mFileType;
 	while (!mFileStream.eof())
 	{
 		/**Loop to Load triangles */
 		/**Vertex 1  -0.5 0.0021 0.5*/
 		/**Face 1  1 4 8*/		
+		/**Also generate the bound box */
 		if (mFileType.compare("Vertex")==0)
 		{
 			mFileStream >> mIngrone;
 			SVertex mVertex;
 			mFileStream >> mVertex.mPosition.mx >> mVertex.mPosition.my >> mVertex.mPosition.mz;
 
-			mVertex.mPosition = mVertex.mPosition*5.0 + mOffset;
+			mVertex.mPosition = mVertex.mPosition*150.0 + mOffset;
+			mBoundBox->ComputeBound(mVertex.mPosition);
 			mMeshObject->mVertexLists.push_back(mVertex);
 			//mVertexLists.push_back(mVertex);
 		}
@@ -75,10 +83,12 @@ void Rscene::LoadMesh()
 		{
 			cerr << "解析文件错误！！！" << endl;
 			delete mMeshObject;
+			delete mBoundBox;
 			return;
 		}
 		mFileStream >> mFileType;
 	}
+	mMeshObject->AddBoundBox(mBoundBox);
 	GameScene.push_back(mMeshObject);
 	mFileStream.close();
 }

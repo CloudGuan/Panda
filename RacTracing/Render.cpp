@@ -2,6 +2,7 @@
 #include "Render.h"
 #include "Core/Sphere.h"
 #include "Core/Camera.h"
+#include "Core/Mesh.h"
 
 #include "Core/Plane.h"
 #include "Light/DirectLight.h"
@@ -138,10 +139,6 @@ bool RenderEngine::Draw()
 			}
 			case SDL_KEYDOWN:
 			{
-
-				RayTracing::Ray SingleRay(Eye.GenerateRay(0.5,0.5));
-				RayTracingRender(&TargetScene, SingleRay, 2);
-				printf_s("ButtonDown!!!");
 				break;
 			}
 			case SDL_MOUSEBUTTONDOWN:
@@ -175,7 +172,9 @@ bool RenderEngine::Draw()
 					}
 				}
 				clock_t mEndTime = clock();
-				printf_s("Time is£º %f\n", (float)(mEndTime - mStartTime) / CLOCKS_PER_SEC);
+				printf_s("Compute Time is£º\t%f\n", (float)(mEndTime - mStartTime) / CLOCKS_PER_SEC);
+				printf_s("Ray-Triangle Test:\t%d\n", numRayTriangleTests._My_val);
+				printf_s("Ray-Triangle Intersect nums:\t%d\n", numIntersect._My_val);
 				SDL_UnlockTexture(pTexture);
 				SDL_RenderCopy(pRenderer,pTexture, NULL, NULL);
 				SDL_RenderPresent(pRenderer);

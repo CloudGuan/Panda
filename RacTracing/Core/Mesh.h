@@ -8,6 +8,11 @@
 #include "../Math/Vertex.h"
 
 #include <vector>
+#include <atomic>
+
+class BoundBox;
+extern std::atomic<uint32_t> numIntersect;
+extern std::atomic<uint32_t> numRayTriangleTests;
 
 class StaticMesh :public Object
 {
@@ -20,7 +25,9 @@ public:
 
 	void AddVertex(SVertex&);
 	bool IntersectTriangle(const SVertex&,const SVertex&,const SVertex&,const RayTracing::Ray&,IntersectResult&);
+	void AddBoundBox(BoundBox*);
 public:
 	std::vector<SVertex>	mVertexLists;
 	std::vector<int*>		mVerIndexLists;
+	BoundBox*	mBoundBox;
 };
