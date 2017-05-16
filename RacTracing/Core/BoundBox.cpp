@@ -10,12 +10,8 @@ const double kInfinity = std::numeric_limits<double>::max();
 BoundBox::BoundBox()
 {
 	/**这里先加三个面*/
-	mBoundNormalPlanes.push_back(new RayTracing::Vector3(1.0, 0.0, 0.0));
-	mBoundNormalPlanes.push_back(new RayTracing::Vector3(0.0, 1.0, 0.0));
-	mBoundNormalPlanes.push_back(new RayTracing::Vector3(0.0, 0.0, 1.0));
-
 	/**in bound 0 means near 1 means far*/
-	for (unsigned int index = 0; index < mBoundNormalPlanes.size(); index++)
+	for (unsigned int index = 0; index < 3; index++)
 	{
 		mBoundValue.push_back(new double[2]{kInfinity,-kInfinity});
 	}
@@ -24,11 +20,9 @@ BoundBox::BoundBox()
 BoundBox::~BoundBox()
 {
 	/**delete all memory block */
-	int mArraySize = mBoundNormalPlanes.size();
+	int mArraySize = 3;
 	for (unsigned int index=0;index<mArraySize;index++)
 	{
-		delete mBoundNormalPlanes[index];
-		mBoundNormalPlanes[index] = nullptr;
 		delete[] mBoundValue[index];
 		mBoundValue[index] = nullptr;
 	}
@@ -38,14 +32,36 @@ BoundBox::~BoundBox()
 *	inpute the ponint in world coordinary
 *	we will get six different value 
 */
+
 void BoundBox::ComputeBound(RayTracing::Vector3& pInPoint)
 {
-	for (int index=0; index<mBoundNormalPlanes.size();index++) 
-	{
-		double mDis = mBoundNormalPlanes[index]->mx*pInPoint.mx + mBoundNormalPlanes[index]->my*pInPoint.my + mBoundNormalPlanes[index]->mz*pInPoint.mz;
-		if (mBoundValue[index][0] > mDis) mBoundValue[index][0] = mDis;
-		if (mBoundValue[index][1] < mDis) mBoundValue[index][1] = mDis;
-	}
+	/**最小面*/
+	if (mBoundValue[0][0] > pInPoint.mx) mBoundValue[0][0] = pInPoint.mx;
+	if (mBoundValue[1][0] > pInPoint.my) mBoundValue[1][0] = pInPoint.my;
+	if (mBoundValue[2][0] > pInPoint.mz) mBoundValue[2][0] = pInPoint.mz;
+	/**最大面*/
+	if (mBoundValue[0][1] < pInPoint.mx) mBoundValue[0][1] = pInPoint.mx;
+	if (mBoundValue[1][1] < pInPoint.my) mBoundValue[1][1] = pInPoint.my;
+	if (mBoundValue[2][1] < pInPoint.mz) mBoundValue[2][1] = pInPoint.mz;
+}
+
+RayTracing::Vector3 BoundBox::GetCenter()const
+{
+	return RayTracing::Vector3(
+		(mBoundValue[0][0] + mBoundValue[0][1]) / 2,
+		(mBoundValue[1][0] + mBoundValue[1][1]) / 2,
+		(mBoundValue[2][0] + mBoundValue[2][1]) / 2
+	);
+}
+
+double*& BoundBox::operator[](int index)
+{
+	return mBoundValue[index];
+}
+
+double* BoundBox::operator[](int index) const
+{
+	return mBoundValue[index];
 }
 
 /**

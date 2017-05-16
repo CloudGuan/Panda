@@ -25,6 +25,11 @@ Rscene::~Rscene()
 	}
 }
 
+void Rscene::LoadScene()
+{
+	/**Load Game scene from files*/
+}
+
 void Rscene::LoadMesh()
 {
 	/**
@@ -160,4 +165,3 @@ bool Rscene::AddLights(RTLight* InLight)
 	SceneLight = InLight;
 	return true;
 }
-
